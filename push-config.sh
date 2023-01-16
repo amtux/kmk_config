@@ -5,16 +5,13 @@ set -eu
 LEFT=/Volumes/CIRCUITPYL
 RIGHT=/Volumes/CIRCUITPYR
 
-if [ -d "$LEFT" ]; then
-  echo "left exists. pushing.."
-  cp -i {kb,boot,main}.py $LEFT/
-fi
+work=0
+for vol in $LEFT $RIGHT; do
+    if [ -d "$vol" ]; then
+      work=1
+      echo "$vol exists..writing to it"
+      cp -i {kb,boot,main}.py "$vol/"
+    fi
+done
 
-if [ -d "$RIGHT" ]; then
-  echo "right exists. pushing.."
-  cp -i {kb,boot}.py $RIGHT/
-  sed "s/SplitSide.LEFT/SplitSide.RIGHT/g" main.py > .right.py
-  cp -i .right.py $RIGHT/main.py
-fi
-
-echo "complete"
+[ $work -eq 0 ] && echo "No volumes found"

@@ -1,2 +1,4 @@
 .right.py
 kmk
+__pycache__/
+*.bak
